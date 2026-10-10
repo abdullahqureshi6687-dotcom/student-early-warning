@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Models: keep only the final one
+models/*.joblib
+!models/final_model.joblib
+
+# Generated figures
+reports/figures/*.png
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
