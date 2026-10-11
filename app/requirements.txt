@@ -1,0 +1,7 @@
+# Minimal dependencies for the Hugging Face Space.
+# scikit-learn MUST match the version used to train/save the model,
+# otherwise joblib may fail to load it or behave differently.
+scikit-learn==1.9.1
+pandas==3.0.6
+numpy==2.5.3
+joblib==1.6.0
