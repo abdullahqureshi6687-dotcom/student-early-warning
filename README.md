@@ -4,7 +4,7 @@
 
 [**▶ Live demo**](https://student-early-warning.streamlit.app) · Python · scikit-learn · Streamlit · SHAP
 
-![App screenshot](reports/figures/app_screenshot.png)
+![App screenshot](reports/figures/image.png)
 
 ---
 
