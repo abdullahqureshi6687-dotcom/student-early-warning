@@ -7,7 +7,8 @@ on those folds). Nested CV tunes inside each training split (inner 3-fold)
 and scores on an untouched outer fold, so the reported number stays honest.
 """
 import pandas as pd
-from sklearn.metrics import make_scorer, precision_score
+from sklearn.metrics import (average_precision_score, f1_score, make_scorer,
+                             precision_score, recall_score, roc_auc_score)
 from sklearn.model_selection import GridSearchCV, StratifiedKFold, cross_validate
 
 from src.config import N_SPLITS, RANDOM_STATE, SCENARIOS
@@ -38,6 +39,23 @@ def make_estimator(model, scale_numeric, param_grid, X):
         return pipe
     return GridSearchCV(pipe, param_grid, scoring=TUNING_METRIC,
                         cv=get_cv(3), n_jobs=-1)
+
+
+def score_predictions(y_true, fail_proba, threshold: float = 0.5) -> dict:
+    """Same metrics as SCORING, computed from predicted fail probabilities.
+
+    Used when a model trained on one dataset is tested on another
+    (no cross-validation involved).
+    """
+    y_pred = (fail_proba >= threshold).astype(int)
+    return {
+        "fail_rate": float(pd.Series(y_true).mean()),
+        "fail_recall": recall_score(y_true, y_pred),
+        "fail_precision": precision_score(y_true, y_pred, zero_division=0),
+        "fail_f1": f1_score(y_true, y_pred),
+        "roc_auc": roc_auc_score(y_true, fail_proba),
+        "pr_auc": average_precision_score(y_true, fail_proba),
+    }
 
 
 def evaluate_all(df: pd.DataFrame) -> pd.DataFrame:
